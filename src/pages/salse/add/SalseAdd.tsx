@@ -6,6 +6,7 @@ import { useFrappeCreateDoc, useFrappeGetDocList } from 'frappe-react-sdk';
 import { useForm } from 'react-hook-form';
 import SearchSelect from '../../../components/searchSelect/searchSelect';
 import { generator } from "../../../utils/idGenerator"
+import Swal from 'sweetalert2';
 
 const init = {
   customer: "ETL-0001",
@@ -89,13 +90,8 @@ const SalseAdd = () => {
       if (el.tempId === id) return { ...el, qty: +e.target.value }
       else return el
     })
-
-
     setItems(selectedItem)
-
-
   }
-
 
   // Date Generator
   const date = new Date()
@@ -104,7 +100,6 @@ const SalseAdd = () => {
 
   // Input Form State Managment 
   const [form, setForm] = useState(init)
-
 
   const handleInvoiceInput = (e) => {
     setForm({
@@ -117,45 +112,42 @@ const SalseAdd = () => {
   const handleSubmitInvoice = (e) => {
     e.preventDefault()
 
-
-
     const submitObj = {
       ...form,
-      customer_name: customer,
+      customer: customer,
       delivery_warehouse: wareHouse,
       territory: territory,
       items
-
     }
 
     const options = {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: "token 3a6f30c363313f8:0fbd705429e5816"
+        Authorization: "token c0d774a0441927e:0a39da4a71b6144"
       },
       body: JSON.stringify(submitObj),
     };
 
-    fetch(`http://excel_erpnext.localhost:8000/api/resource/Sales Invoice`, options).then((res) => res.json()).then(() => console.log("sales invoice crated sucessfully"))
+    fetch(`http://excel_erpnext.localhost:8000/api/resource/Sales Invoice`, options).then((res) => res.json()).then(() => Swal.fire({
+      title: 'Success',
+      text: 'Sales Invoice Crated Sucessfully',
+      icon: 'success'
+    })
+    )
     console.log(submitObj);
-
   }
 
   const handleItemClick = (sitem, itemId) => {
-
-
     const selectItem = items.find(el => el.tempId === itemId)
     selectItem.item_name = sitem?.item_name
     selectItem.qty = sitem?.qty || selectItem.qty
     selectItem.rate = sitem?.standard_rate
     selectItem.item_code = sitem?.item_code
 
-
     // close the modal
     setModalId('')
     console.log(selectItem);
-
   }
   return (
     <>

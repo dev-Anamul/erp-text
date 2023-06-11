@@ -7,39 +7,38 @@ import SalseFilter from './SalseFilter';
 import { useEffect, useState } from 'react';
 import TableFooter from './TableFooter';
 import { useFrappeGetDocList } from 'frappe-react-sdk';
+import SkeletonList from './Skeleton/SkeletonList';
 import { useNavigate } from 'react-router-dom';
 
 const SalseList = () => {
   const [filterLimit, setFilterLimit] = useState(20)
+  const [data, setData] = useState([])
   const navigate = useNavigate()
 
   // Filter SHow Hide Handler
   const [filter, setFilter] = useState(false)
 
   // Get Data 
-  const { data, isLoading, error } = useFrappeGetDocList('Sales Invoice', {
-    fields: ['name', 'status', "posting_date", 'posting_time', 'customer_name', 'paid_amount', 'net_total', 'remarks'],
-    limit_start: 50,
-    limit: filterLimit,
-    orderBy: {
-      field: 'creation',
-      order: 'desc',
-    }
-  })
-  console.log(data);
+  // const { data, isLoading, error } = useFrappeGetDocList('Sales Invoice', {
+  //   fields: ['name', 'status', "posting_date", 'posting_time', 'customer_name', 'paid_amount', 'net_total', 'remarks'],
+  //   limit: filterLimit,
+  //   orderBy: {
+  //     field: 'creation',
+  //     order: 'desc',
+  //   }
+  // })
+  // console.log(data);
 
-  // useEffect(() => {
-  //   fetch(`http://excel_erpnext.localhost:8000/api/resource/Sales Invoice/?fields=['name', 'status', "posting_date", 'posting_time', 'customer_name', 'paid_amount', 'net_total', 'remarks']`, {
-  //     headers: {
-  //       Authorization: "token 3a6f30c363313f8:0fbd705429e5816"
-  //     }
-  //   }).then((res) => res.json()).then((data) => {
-  //     console.log(data)
-  //     setData(data.data)
-  //   }).catch((err) => console.log(err)).finally(() => setIsLoading(false))
-  // }, [])
-
-
+  useEffect(() => {
+    fetch(`http://excel_erpnext.localhost:8000/api/resource/Sales Invoice?fields=%5B%22name%22%2C%20%22status%22%2C%20%22posting_date%22%2C%20%22posting_time%22%2C%20%22customer_name%22%2C%20%22paid_amount%22%2C%20%22net_total%22%2C%20%22remarks%22%5D&limit=300&order_by=creation+desc`, {
+      headers: {
+        Authorization: "token 3a6f30c363313f8:0fbd705429e5816"
+      }
+    }).then((res) => res.json()).then((data) => {
+      console.log(data)
+      setData(data.data)
+    }).catch((err) => console.log(err)).finally()
+  }, [])
 
   return (
     <div className='border rounded-md overflow-hidden'>
@@ -69,13 +68,13 @@ const SalseList = () => {
                 )
               })}
             </Tbody>
-            {isLoading && (
+            {/* {isLoading && (
               <Stack direction='row' spacing={4}>
                 <Spinner size='xl' />
               </Stack>
               // <SkeletonList />
-            )}
-            {error && (<h1> Error </h1>)}
+            )} */}
+            {/* {error && (<h1> Error </h1>)} */}
           </Table>
         </div>
       </TableContainer>

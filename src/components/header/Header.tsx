@@ -5,7 +5,6 @@ import { FaBars } from "react-icons/fa";
 
 const Header = () => {
     const { currentUser, isValidating, login, logout, updateCurrentUser, getUserCookie } = useFrappeAuth();
-  login("azmin", "Azmin@123#");
   console.log(currentUser);
   
   return (

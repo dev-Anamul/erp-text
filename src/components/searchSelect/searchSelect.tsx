@@ -56,7 +56,7 @@ const SearchSelect = ({ docType, field, filter, state, setState, placeholder } =
                 {data?.map((opt, i) => {
                     return (
                         <>
-                            <li key={i} onClick={() => handleOption(docType === 'Customer' ? opt.customer_name
+                            <li key={i} onClick={() => handleOption(docType === 'Customer' ? opt.customer
                                 : docType === 'Warehouse' ? opt.warehouse_name : opt.territory_name)}>{
                                     docType === 'Customer' ? opt.customer_name
                                         : docType === 'Warehouse' ? opt.warehouse_name : opt.territory_name
